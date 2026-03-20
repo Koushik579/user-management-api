@@ -1,5 +1,7 @@
 package com.koushik.usermanagement.service;
 
+import com.koushik.usermanagement.dto.UserRequestDTO;
+import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.entity.User;
 import com.koushik.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,19 +17,42 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers(){
-        return userRepository.findAll();
+    private UserResponseDTO mapToDTO(User user){
+        UserResponseDTO resDTO = new UserResponseDTO();
+        resDTO.setId(user.getId());
+        resDTO.setName(user.getName());
+        resDTO.setAge(user.getAge());
+        return resDTO;
     }
 
-    public User addUser(User user){
-        return userRepository.save(user);
+    private User mapToUser(UserRequestDTO user){
+        User resDTO = new User();
+        resDTO.setName(user.getName());
+        resDTO.setAge(user.getAge());
+        return resDTO;
     }
 
-    public User getUserWithId(Long id){
-        return userRepository.findById(id).orElse(null);
+    public List<UserResponseDTO> getUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
-    public boolean updateUser(Long id,User user){
+    public UserResponseDTO addUser(UserRequestDTO user){
+        User newUser = mapToUser(user);
+        User savedUser = userRepository.save(newUser);
+        return mapToDTO(savedUser);
+    }
+
+    public UserResponseDTO getUserWithId(Long id){
+
+        return userRepository.findById(id)
+                .map(this::mapToDTO)
+                .orElse(null);
+    }
+
+    public boolean updateUser(Long id, UserRequestDTO user){
         Optional<User> existing = userRepository.findById(id);
 
         if(existing.isEmpty()){

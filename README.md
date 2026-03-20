@@ -1,20 +1,23 @@
-# User Management API – Spring Boot
+# 🚀 User Management API – Spring Boot
 
 ## Overview
 
-User Management API is a Spring Boot-based RESTful application that provides CRUD operations for managing users.  
-It follows a clean layered architecture using Controller, Service, Repository, and Entity components.
+User Management API is a Spring Boot-based RESTful application that provides CRUD operations for managing users.
 
-This project is part of my backend development practice, focusing on building scalable REST APIs with Spring Boot and JPA.
+The project follows a clean layered architecture and now includes **DTO (Data Transfer Object) pattern** to ensure better data handling and separation between internal models and API responses.
+
+This project is part of my backend development journey, focusing on building scalable and maintainable REST APIs.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-- Create, Read, Update, Delete (CRUD) operations for users
+- CRUD operations (Create, Read, Update, Delete)
 - RESTful API design
-- Layered architecture (Controller → Service → Repository → Entity)
-- Database integration using Spring Data JPA
+- Layered architecture:
+  - Controller → Service → Repository → Entity
+- DTO implementation for request & response handling
+- Database interaction using Spring Data JPA
 - Clean and modular code structure
 
 ---
@@ -25,11 +28,11 @@ This project is part of my backend development practice, focusing on building sc
 - Spring Boot
 - Spring Data JPA
 - Maven
-- (Database configured via `application.properties`)
+- Database (configured via `application.properties`)
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```
 src/main/java/com/koushik/usermanagement
@@ -37,14 +40,18 @@ src/main/java/com/koushik/usermanagement
 ├── controller # REST API endpoints
 │ └── UserController.java
 │
-├── service # Business logic
+├── service # Business logic layer
 │ └── UserService.java
 │
-├── repository # Data access layer (JPA)
+├── repository # Data access layer
 │ └── UserRepository.java
 │
-├── entity # Entity classes
+├── entity # Database entity
 │ └── User.java
+│
+├── dto # Data Transfer Objects
+│ ├── UserRequestDTO.java
+│ └── UserResponseDTO.java
 │
 └── UserManagementApiApplication.java
 ```
@@ -60,7 +67,11 @@ git clone <your-repo-url>
 cd user-management-api
 2. Configure Database
 
-Update src/main/resources/application.properties with your database details:
+Update:
+
+src/main/resources/application.properties
+
+Example:
 
 spring.datasource.url=jdbc:your_database_url
 spring.datasource.username=your_username
@@ -69,12 +80,9 @@ spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 3. Run the Application
-
-Using Maven wrapper:
-
 ./mvnw spring-boot:run
 
-On Windows:
+Windows:
 
 mvnw.cmd spring-boot:run
 🌐 API Base URL
@@ -86,48 +94,51 @@ GET	/users/{id}	Get user by ID
 POST	/users	Create user
 PUT	/users/{id}	Update user
 DELETE	/users/{id}	Delete user
-
-(Adjust endpoints based on your controller implementation)
-
+🔄 Data Flow (Important Concept)
+Client → DTO → Controller → Service → Repository → Database
+                                     ↓
+Client ← DTO ← Controller ← Service ← Entity
 📈 Current Status
 
 ✔ CRUD operations implemented
 
-✔ JPA repository integration
+✔ JPA integration
 
-✔ Service layer abstraction
+✔ DTO layer added
+
+✔ Clean layered architecture
 
 🚧 In Progress
 
-DTO implementation
-
-Input validation (Hibernate Validator)
-
-Improved exception handling
-
-🎯 Learning Goals
-
-Build REST APIs using Spring Boot
-
-Understand layered architecture
-
-Work with Spring Data JPA
-
-Implement validation and DTO patterns
-
-Improve API design and error handling
-
-🔮 Future Improvements
-
-DTO layer for better data handling
+Input validation (@Valid, Hibernate Validator)
 
 Global exception handling (@ControllerAdvice)
 
-Validation using annotations (@Valid)
+Better error responses
+
+🔮 Future Improvements
+
+Validation with annotations (@NotNull, @Email, etc.)
+
+Global exception handling
 
 Pagination & sorting
 
-API documentation (Swagger/OpenAPI)
+API documentation (Swagger)
+
+Unit & integration testing
+
+🎯 Learning Goals
+
+Build scalable REST APIs using Spring Boot
+
+Implement DTO pattern properly
+
+Understand JPA and database interaction
+
+Improve API design and structure
+
+Apply best practices used in real-world backend systems
 
 👤 Author
 
