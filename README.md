@@ -76,7 +76,7 @@ src/main/java/com/koushik/usermanagement
 
 ### 1️⃣ Clone the Repository
 
-```bash
+```
 git clone <your-repo-url>
 cd user-management-api
 2️⃣ Configure Database
