@@ -37,7 +37,7 @@ This makes the application closer to real-world production-grade APIs.
 | Framework    | Spring Boot         |
 | ORM          | Spring Data JPA     |
 | Build Tool   | Maven               |
-| Database     | Configurable (MySQL/PostgreSQL) |
+| Database     | PostgreSQL          |
 
 ---
 
@@ -129,12 +129,15 @@ Validation errors
 Resource not found exceptions
 General runtime exceptions
 📄 Example Error Response
+
 {
-  "timestamp": "2026-03-21T21:00:00",
+
   "status": 400,
-  "error": "Validation Failed",
-  "message": "Email must be valid"
+  "message": "Validation Error",
+  "error": { "name": "Name cannot be empty" } 
+  
 }
+
 📈 Current Status
 ✔ CRUD operations implemented
 ✔ JPA integration
