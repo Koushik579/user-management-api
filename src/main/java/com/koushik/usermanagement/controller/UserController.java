@@ -4,6 +4,7 @@ import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.entity.User;
 import com.koushik.usermanagement.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> addUsersDb(@RequestBody UserRequestDTO user){
+    public ResponseEntity<UserResponseDTO> addUsersDb(@RequestBody @Valid UserRequestDTO user){
         UserResponseDTO savedUser = userService.addUser(user);
         return ResponseEntity.status(201).body(savedUser);
     }
@@ -40,7 +41,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUserById(@PathVariable Long id,
-                                                          @RequestBody UserRequestDTO user){
+                                                          @RequestBody @Valid UserRequestDTO user){
         boolean checkUser = userService.updateUser(id,user);
         if(!checkUser){
             return ResponseEntity.notFound().build();
