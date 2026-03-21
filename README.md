@@ -135,34 +135,41 @@ General runtime exceptions
   "status": 400,
   "message": "Validation Error",
   "error": { "name": "Name cannot be empty" } 
-  
-}
 
-📈 Current Status
+}
+```
+## 📈 Current Status
 ✔ CRUD operations implemented
 ✔ JPA integration
 ✔ DTO layer implemented
 ✔ Input validation added
 ✔ Global exception handling implemented
 ✔ Clean layered architecture
-🔮 Future Improvements
+
+
+## 🔮 Future Improvements
+
 📄 API documentation (Swagger / OpenAPI)
 🔐 Authentication & Authorization (Spring Security + JWT)
 📊 Pagination & Sorting
 🧪 Unit & Integration Testing
 📜 Logging & Monitoring
-🎯 Learning Objectives
+
+
+## 🎯 Learning Objectives
 Build scalable REST APIs using Spring Boot
 Implement DTO pattern correctly
 Apply validation and exception handling
 Understand layered architecture
 Follow backend best practices used in real-world projects
-👤 Author
+
+
+## 👤 Author
 
 Koushik Karmakar
 Backend Developer (Java | Spring Boot | SQL)
 
-📌 Notes
+## 📌 Notes
 
 This project is part of my backend development journey.
 The codebase will continue to evolve with new features and improvements following industry best practices.
