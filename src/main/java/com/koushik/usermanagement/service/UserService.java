@@ -3,11 +3,11 @@ package com.koushik.usermanagement.service;
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.entity.User;
+import com.koushik.usermanagement.exception.UserNotFoundException;
 import com.koushik.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -49,31 +49,24 @@ public class UserService {
 
         return userRepository.findById(id)
                 .map(this::mapToDTO)
-                .orElse(null);
+                .orElseThrow(()-> new UserNotFoundException("Cannot find the user with id: "+id));
     }
 
-    public boolean updateUser(Long id, UserRequestDTO user){
-        Optional<User> existing = userRepository.findById(id);
+    public void updateUser(Long id, UserRequestDTO user){
+        User dbUser = userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException("Cannot find the user with id: "+id));
 
-        if(existing.isEmpty()){
-            return false;
-        }
-
-        User dbUser = existing.get();
         dbUser.setName(user.getName());
         dbUser.setAge(user.getAge());
 
         userRepository.save(dbUser);
-        return true;
     }
 
-    public boolean deleteUser(Long id){
-        Optional<User> u = userRepository.findById(id);
-        if(u.isEmpty()){
-            return false;
-        }
+    public void deleteUser(Long id){
+        userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException("Cannot find the user with id:" +id));
+
         userRepository.deleteById(id);
-        return true;
     }
 
 }

@@ -1,12 +1,32 @@
 package com.koushik.usermanagement.exception;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class ErrorResponse {
 
+    private LocalDateTime timeStamp;
+    private String path;
     private Integer status;
     private String message;
     private Map<String,String> error;
+
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public Map<String, String> getError() {
         return error;

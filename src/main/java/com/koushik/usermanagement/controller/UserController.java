@@ -2,7 +2,6 @@ package com.koushik.usermanagement.controller;
 
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
-import com.koushik.usermanagement.entity.User;
 import com.koushik.usermanagement.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -33,27 +32,19 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
         UserResponseDTO getUser = userService.getUserWithId(id);
-        if(getUser == null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(getUser);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUserById(@PathVariable Long id,
                                                           @RequestBody @Valid UserRequestDTO user){
-        boolean checkUser = userService.updateUser(id,user);
-        if(!checkUser){
-            return ResponseEntity.notFound().build();
-        }
+        userService.updateUser(id,user);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
-        if (!userService.deleteUser(id)){
-            return ResponseEntity.notFound().build();
-        }
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
