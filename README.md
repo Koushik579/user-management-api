@@ -131,11 +131,21 @@ General runtime exceptions
 📄 Example Error Response
 
 {
+    "timeStamp": "2026-03-23T20:32:42.2692842",
+    "path": "/user/19",
+    "status": 404,
+    "message": "Cannot find the user with id: 19",
+    "error": null
+}
 
-  "status": 400,
-  "message": "Validation Error",
-  "error": { "name": "Name cannot be empty" } 
-
+{
+    "timeStamp": "2026-03-23T20:34:36.0097216",
+    "path": "/user/2",
+    "status": 400,
+    "message": "Validation Error",
+    "error": {
+        "name": "Name cannot be empty"
+    }
 }
 ```
 ## 📈 Current Status
