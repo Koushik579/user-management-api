@@ -20,6 +20,7 @@ This makes the application closer to real-world production-grade APIs.
 - 🌐 RESTful API design
 - 🧱 Layered architecture:
   - Controller → Service → Repository → Entity
+- 📜 Logging implemented for tracking application flow and debugging
 - 📦 DTO pattern for request & response handling
 - 🛡️ Input validation using annotations (`@Valid`)
 - ⚠️ Global exception handling using `@ControllerAdvice`
@@ -29,15 +30,41 @@ This makes the application closer to real-world production-grade APIs.
 
 ---
 
+## 📜 Logging
+
+Logging is implemented to monitor application behavior and assist in debugging.
+
+### 🔹 Features
+- Logs important application events
+- Tracks API requests and responses
+- Helps in debugging errors and tracing execution flow
+
+### 🔹 Usage
+- Uses Spring Boot’s default logging (Logback)
+- Log levels used:
+  - INFO → General application flow
+  - ERROR → Exception tracking
+
+### 🔹 Example
+
+
+INFO - Creating new user
+INFO - Fetching user with id: 1
+ERROR - User not found with id: 19
+WARN - Validation Error
+
+---
+
 ## 🛠 Tech Stack
 
-| Category     | Technology           |
+| Category     | Technology          |
 |--------------|---------------------|
 | Language     | Java                |
 | Framework    | Spring Boot         |
 | ORM          | Spring Data JPA     |
 | Build Tool   | Maven               |
 | Database     | PostgreSQL          |
+| Logging      | SLF4J / Logback     |
 
 ---
 
@@ -51,6 +78,9 @@ src/main/java/com/koushik/usermanagement
 │
 ├── service/ # Business logic layer
 │ └── UserService.java
+|
+├── mapper/ # Mapping Entity with DTO
+│ └── UserMapper.java
 │
 ├── repository/ # Data access layer (JPA)
 │ └── UserRepository.java
@@ -117,8 +147,9 @@ Client ← DTO ← Controller ← Service ← Entity
 Implemented using annotations such as:
 @NotNull
 @NotBlank
-@Email
-@Size
+@Min
+@Email(Not Used in this project)
+@Size(Not Used in this project)
 Applied on DTO classes
 Ensures only valid data enters the system
 🔹 Exception Handling

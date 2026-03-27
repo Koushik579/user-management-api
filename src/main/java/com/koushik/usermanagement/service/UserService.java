@@ -4,6 +4,7 @@ import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.entity.User;
 import com.koushik.usermanagement.exception.UserNotFoundException;
+import com.koushik.usermanagement.mapper.UserMapper;
 import com.koushik.usermanagement.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,46 +16,35 @@ import java.util.List;
 public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    public UserService(UserRepository userRepository,UserMapper userMapper) {
 
-    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
+
     }
 
-    private UserResponseDTO mapToDTO(User user){
-        UserResponseDTO resDTO = new UserResponseDTO();
-        resDTO.setId(user.getId());
-        resDTO.setName(user.getName());
-        resDTO.setAge(user.getAge());
-        return resDTO;
-    }
-
-    private User mapToUser(UserRequestDTO user){
-        User resDTO = new User();
-        resDTO.setName(user.getName());
-        resDTO.setAge(user.getAge());
-        return resDTO;
-    }
 
     public List<UserResponseDTO> getUsers(){
         log.info("Featching all users");
         return userRepository.findAll()
                 .stream()
-                .map(this::mapToDTO)
+                .map(userMapper::mapToDTO)
                 .toList();
     }
 
     public UserResponseDTO addUser(UserRequestDTO user){
-        User newUser = mapToUser(user);
+        User newUser = userMapper.mapToUser(user);
         User savedUser = userRepository.save(newUser);
         log.info("User added with id : {}, Name : {}, Age : {}"
                 ,savedUser.getId(),savedUser.getName(),savedUser.getAge());
-        return mapToDTO(savedUser);
+        return userMapper.mapToDTO(savedUser);
     }
 
     public UserResponseDTO getUserWithId(Long id){
         log.info("User searched with id : {}", id);
         return userRepository.findById(id)
-                .map(this::mapToDTO)
+                .map(userMapper::mapToDTO)
                 .orElseThrow(()-> new UserNotFoundException("Cannot find the user with id : "+id));
 
     }
