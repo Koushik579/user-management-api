@@ -62,4 +62,16 @@ public class GlobalExceptionHandler {
         log.error("SomeThing Went Wrong",ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errRes);
     }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException ex
+            ,HttpServletRequest req){
+        ErrorResponse errRes = new ErrorResponse();
+        errRes.setTimeStamp(LocalDateTime.now());
+        errRes.setStatus(HttpStatus.UNAUTHORIZED.value());
+        errRes.setPath(req.getRequestURI());
+        errRes.setMessage("Invalid Credentials");
+        log.warn("Invalid login attempt for path: {}", req.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errRes);
+    }
 }

@@ -14,6 +14,7 @@ public class UserMapper {
         userResponseDTO.setId(user.getId());
         userResponseDTO.setName(user.getName());
         userResponseDTO.setAge(user.getAge());
+        userResponseDTO.setEmail(user.getEmail());
 
         return userResponseDTO;
     }
@@ -23,6 +24,7 @@ public class UserMapper {
 
         user.setName(requestDTO.getName());
         user.setAge(requestDTO.getAge());
+        user.setEmail(requestDTO.getEmail());
 
         return user;
     }

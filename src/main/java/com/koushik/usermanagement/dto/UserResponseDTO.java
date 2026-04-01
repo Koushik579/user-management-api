@@ -5,6 +5,16 @@ public class UserResponseDTO {
     private Long id;
     private String name;
     private Integer age;
+    private String email;
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Integer getAge() {
         return age;

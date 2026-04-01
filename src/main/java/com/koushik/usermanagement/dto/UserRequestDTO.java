@@ -11,6 +11,30 @@ public class UserRequestDTO {
     @Min(value = 18, message = "Must be greater than or equals to 18")
     private Integer age;
 
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 8)
+    private String password;
+
+    @NotBlank
+    @Email(message = "Invalid Email")
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Integer getAge() {
         return age;
     }

@@ -1,5 +1,6 @@
 package com.koushik.usermanagement.controller;
 
+import com.koushik.usermanagement.dto.LoginRequestDTO;
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.service.UserService;
@@ -27,7 +28,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @PostMapping
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody @Valid LoginRequestDTO dto){
+        log.info("Trying login with email : {}", dto.getEmail());
+        return ResponseEntity.ok(userService.login(dto));
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> addUsersDb(@RequestBody @Valid UserRequestDTO user){
         log.info("Adding new users");
         UserResponseDTO savedUser = userService.addUser(user);

@@ -1,27 +1,38 @@
 package com.koushik.usermanagement.service;
 
+import com.koushik.usermanagement.dto.LoginRequestDTO;
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.entity.User;
+import com.koushik.usermanagement.exception.InvalidCredentialsException;
 import com.koushik.usermanagement.exception.UserNotFoundException;
 import com.koushik.usermanagement.mapper.UserMapper;
 import com.koushik.usermanagement.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
+
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    public UserService(UserRepository userRepository,UserMapper userMapper) {
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
+    public UserService(UserRepository userRepository
+            , UserMapper userMapper
+            , BCryptPasswordEncoder passwordEncoder
+            , JwtService jwtService) {
 
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
 
@@ -33,8 +44,10 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDTO addUser(UserRequestDTO user){
-        User newUser = userMapper.mapToUser(user);
+    public UserResponseDTO addUser(UserRequestDTO dto){
+        String hashedPass = passwordEncoder.encode(dto.getPassword());
+        User newUser = userMapper.mapToUser(dto);
+        newUser.setPassword(hashedPass);
         User savedUser = userRepository.save(newUser);
         log.info("User added with id : {}, Name : {}, Age : {}"
                 ,savedUser.getId(),savedUser.getName(),savedUser.getAge());
@@ -49,12 +62,12 @@ public class UserService {
 
     }
 
-    public void updateUser(Long id, UserRequestDTO user){
+    public void updateUser(Long id, UserRequestDTO dto){
         User dbUser = userRepository.findById(id)
-                .orElseThrow(()-> new UserNotFoundException("Cannot find the user with id: "+id));
+                .orElseThrow(()-> new UserNotFoundException("Cannot find the dto with id: "+id));
 
-        dbUser.setName(user.getName());
-        dbUser.setAge(user.getAge());
+        dbUser.setName(dto.getName());
+        dbUser.setAge(dto.getAge());
 
         userRepository.save(dbUser);
         log.info("User updated with id : {}, Name : {}, Age : {}", id,dbUser.getName(),dbUser.getAge());
@@ -67,4 +80,15 @@ public class UserService {
         log.info("User deleted with \nid : {}", id);
     }
 
+    public String login(LoginRequestDTO dto){
+        log.info("Fetching user by Email id : {}", dto.getEmail());
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(()-> new InvalidCredentialsException("Invalid Credentials"));
+        log.info("User found with the email");
+        if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+            throw new InvalidCredentialsException("Invalid Credentials");
+        }
+        log.info("Password Validated user authorised");
+        return jwtService.generateToken(dto.getEmail() );
+    }
 }
