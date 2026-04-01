@@ -65,6 +65,9 @@ WARN - Validation Error
 | Build Tool   | Maven               |
 | Database     | PostgreSQL          |
 | Logging      | SLF4J / Logback     |
+| Security     | Spring Security     |
+| Password#    | BCrypt              |
+| JWT          | JWT                 |
 
 ---
 
@@ -75,9 +78,13 @@ src/main/java/com/koushik/usermanagement
 │
 ├── controller/ # Handles HTTP requests
 │ └── UserController.java
+|
+├── Configuration/ # Handles configuration files
+│ └── SecurityConfig.java
 │
 ├── service/ # Business logic layer
 │ └── UserService.java
+│ └── JwtService.java
 |
 ├── mapper/ # Mapping Entity with DTO
 │ └── UserMapper.java
@@ -87,13 +94,19 @@ src/main/java/com/koushik/usermanagement
 │
 ├── entity/ # Database entity
 │ └── User.java
+|
+├── security/ # JWT Filter
+│ └── JwtFilter.java
 │
 ├── dto/ # Data Transfer Objects
 │ ├── UserRequestDTO.java
+│ ├── LoginRequestDTO.java
 │ └── UserResponseDTO.java
 │
 ├── exception/ # Global exception handling
 │ ├── ErrorResponse.java
+│ ├── UserNotFoundException.java
+│ ├── InvalidCredentialsException.java
 │ └── GlobalExceptionHandler.java
 │
 └── UserManagementApiApplication.java
