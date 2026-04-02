@@ -77,7 +77,7 @@ public class UserService {
         userRepository.findById(id)
                 .orElseThrow(()-> new UserNotFoundException("Cannot find the user with id:" +id));
         userRepository.deleteById(id);
-        log.info("User deleted with \nid : {}", id);
+        log.info("User deleted with id : {}", id);
     }
 
     public String login(LoginRequestDTO dto){

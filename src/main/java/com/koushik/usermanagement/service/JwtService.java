@@ -3,6 +3,7 @@ package com.koushik.usermanagement.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
@@ -11,8 +12,11 @@ import java.util.Date;
 
 @Service
 public class JwtService {
+    @Value("${jwt.secret}")
+    private String secret ;
+
     private Key getSignKey(){
-        String secret = "mysecretkeymysecretkeymysecretkey";
+
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
     public String generateToken(String email){

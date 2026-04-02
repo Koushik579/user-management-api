@@ -32,20 +32,25 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.contains("Bearer ")){
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid Token");
+            response.getWriter().write("Expired or Invalid Token");
             return;
         }
         String token = authHeader.substring(7);
 
         if(jwtService.isTokenValid(token)){
             String email = jwtService.extractEmail(token);
+
             if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(email,null,new ArrayList<>());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid or Expired Token");
+            return;
         }
         filterChain.doFilter(request,response);
     }
