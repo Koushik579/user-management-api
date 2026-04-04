@@ -1,5 +1,6 @@
 package com.koushik.usermanagement.service;
 
+import com.koushik.usermanagement.dto.AuthResponseDTO;
 import com.koushik.usermanagement.dto.LoginRequestDTO;
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
@@ -45,7 +46,7 @@ public class UserService {
     }
 
     public UserResponseDTO addUser(UserRequestDTO dto){
-        String hashedPass = passwordEncoder.encode(dto.getPassword());
+        String hashedPass = passwordEncoder.encode(dto.password());
         User newUser = userMapper.mapToUser(dto);
         newUser.setPassword(hashedPass);
         User savedUser = userRepository.save(newUser);
@@ -66,8 +67,8 @@ public class UserService {
         User dbUser = userRepository.findById(id)
                 .orElseThrow(()-> new UserNotFoundException("Cannot find the dto with id: "+id));
 
-        dbUser.setName(dto.getName());
-        dbUser.setAge(dto.getAge());
+        dbUser.setName(dto.name());
+        dbUser.setAge(dto.age());
 
         userRepository.save(dbUser);
         log.info("User updated with id : {}, Name : {}, Age : {}", id,dbUser.getName(),dbUser.getAge());
@@ -80,15 +81,15 @@ public class UserService {
         log.info("User deleted with id : {}", id);
     }
 
-    public String login(LoginRequestDTO dto){
-        log.info("Fetching user by Email id : {}", dto.getEmail());
-        User user = userRepository.findByEmail(dto.getEmail())
+    public AuthResponseDTO login(LoginRequestDTO dto){
+        log.info("Fetching user by Email id : {}", dto.email());
+        User user = userRepository.findByEmail(dto.email())
                 .orElseThrow(()-> new InvalidCredentialsException("Invalid Credentials"));
         log.info("User found with the email");
-        if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+        if(!passwordEncoder.matches(dto.password(), user.getPassword())){
             throw new InvalidCredentialsException("Invalid Credentials");
         }
         log.info("Password Validated user authorised");
-        return jwtService.generateToken(dto.getEmail() );
+        return new AuthResponseDTO(jwtService.generateToken(dto.email()));
     }
 }

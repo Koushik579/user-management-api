@@ -83,7 +83,7 @@ src/main/java/com/koushik/usermanagement
 │ └── SecurityConfig.java
 │
 ├── service/ # Business logic layer
-│ └── UserService.java
+│ ├── UserService.java
 │ └── JwtService.java
 |
 ├── mapper/ # Mapping Entity with DTO
@@ -99,6 +99,7 @@ src/main/java/com/koushik/usermanagement
 │ └── JwtFilter.java
 │
 ├── dto/ # Data Transfer Objects
+│ ├── AuthRersponseDTO.java
 │ ├── UserRequestDTO.java
 │ ├── LoginRequestDTO.java
 │ └── UserResponseDTO.java

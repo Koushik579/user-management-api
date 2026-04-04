@@ -9,22 +9,20 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     public UserResponseDTO mapToDTO(User user){
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
-
-        userResponseDTO.setId(user.getId());
-        userResponseDTO.setName(user.getName());
-        userResponseDTO.setAge(user.getAge());
-        userResponseDTO.setEmail(user.getEmail());
-
-        return userResponseDTO;
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getAge(),
+                user.getEmail()
+        );
     }
 
     public User mapToUser(UserRequestDTO requestDTO){
         User user = new User();
 
-        user.setName(requestDTO.getName());
-        user.setAge(requestDTO.getAge());
-        user.setEmail(requestDTO.getEmail());
+        user.setName(requestDTO.name());
+        user.setAge(requestDTO.age());
+        user.setEmail(requestDTO.email());
 
         return user;
     }

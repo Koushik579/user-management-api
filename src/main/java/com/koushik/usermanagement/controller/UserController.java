@@ -1,5 +1,6 @@
 package com.koushik.usermanagement.controller;
 
+import com.koushik.usermanagement.dto.AuthResponseDTO;
 import com.koushik.usermanagement.dto.LoginRequestDTO;
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
@@ -29,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody @Valid LoginRequestDTO dto){
-        log.info("Trying login with email : {}", dto.getEmail());
+    public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody @Valid LoginRequestDTO dto){
+        log.info("Trying login with email : {}", dto.email());
         return ResponseEntity.ok(userService.login(dto));
     }
 
