@@ -23,12 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
-        log.info("Searching for Users");
-        return ResponseEntity.ok(userService.getUsers());
-    }
-
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody @Valid LoginRequestDTO dto){
         log.info("Trying login with email : {}", dto.email());

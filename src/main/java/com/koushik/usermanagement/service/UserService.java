@@ -50,8 +50,8 @@ public class UserService {
         User newUser = userMapper.mapToUser(dto);
         newUser.setPassword(hashedPass);
         User savedUser = userRepository.save(newUser);
-        log.info("User added with id : {}, Name : {}, Age : {}"
-                ,savedUser.getId(),savedUser.getName(),savedUser.getAge());
+        log.info("User added with id : {}, Name : {}, Age : {}, Role : {}"
+                ,savedUser.getId(),savedUser.getName(),savedUser.getAge(),savedUser.getRole());
         return userMapper.mapToDTO(savedUser);
     }
 
@@ -90,6 +90,6 @@ public class UserService {
             throw new InvalidCredentialsException("Invalid Credentials");
         }
         log.info("Password Validated user authorised");
-        return new AuthResponseDTO(jwtService.generateToken(dto.email()));
+        return new AuthResponseDTO(jwtService.generateToken(dto.email(),user.getRole()));
     }
 }
