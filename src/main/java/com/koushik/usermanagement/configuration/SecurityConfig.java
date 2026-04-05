@@ -1,7 +1,6 @@
 package com.koushik.usermanagement.configuration;
 
 import com.koushik.usermanagement.security.JwtFilter;
-import com.koushik.usermanagement.service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +21,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login","/user/register").permitAll()
+                        .requestMatchers("/auth/login","/auth/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
                         .anyRequest().authenticated())

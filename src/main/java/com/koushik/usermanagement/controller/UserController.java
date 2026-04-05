@@ -23,20 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody @Valid LoginRequestDTO dto){
-        log.info("Trying login with email : {}", dto.email());
-        return ResponseEntity.ok(userService.login(dto));
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> addUsersDb(@RequestBody @Valid UserRequestDTO user){
-        log.info("Adding new users");
-        UserResponseDTO savedUser = userService.addUser(user);
-
-        return ResponseEntity.status(201).body(savedUser);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
         log.info("Searching users by id : {}", id);

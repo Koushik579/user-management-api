@@ -3,6 +3,8 @@ package com.koushik.usermanagement.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,11 @@ import java.util.Objects;
 
 @Service
 public class JwtService {
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
     @Value("${jwt.secret}")
     private String secret ;
+    @Value("${jwt.expiry}")
+    private long expiry;
 
     private Key getSignKey(){
 
@@ -25,13 +30,15 @@ public class JwtService {
     public String generateToken(String email,String role){
         Map<String, Object> claim = new HashMap<>();
         claim.put("role",role);
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(email)
-                .setClaims(claim)
+                .addClaims(claim)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+(1000 * 60 * 60)))
+                .setExpiration(new Date(System.currentTimeMillis()+expiry))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
+        log.info("JWT Token Created");
+        return token;
     }
 
     public String extractEmail(String token) {
@@ -58,13 +65,11 @@ public class JwtService {
                    .setSigningKey(getSignKey())
                    .build()
                    .parseClaimsJws(token);
+           log.info("Token Validated");
            return true;
         }catch(Exception e){
+            log.error("Token Is Invalid");
             return false;
         }
     }
 }
-
-
-
-
