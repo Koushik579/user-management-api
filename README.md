@@ -51,6 +51,7 @@ Logging is implemented to monitor application behavior and assist in debugging.
 INFO - Creating new user
 INFO - Fetching user with id: 1
 ERROR - User not found with id: 19
+ERROR - Invalid token
 WARN - Validation Error
 
 ---
@@ -77,6 +78,8 @@ WARN - Validation Error
 src/main/java/com/koushik/usermanagement
 │
 ├── controller/ # Handles HTTP requests
+| ├── AdminService.java
+| ├── AuthService.java
 │ └── UserController.java
 |
 ├── Configuration/ # Handles configuration files
