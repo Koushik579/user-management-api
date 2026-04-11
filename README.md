@@ -21,6 +21,7 @@ This makes the application closer to real-world production-grade APIs.
 - 🧱 Layered architecture:
   - Controller → Service → Repository → Entity
 - 📜 Logging implemented for tracking application flow and debugging
+- 📄 Pagination support for fetching users efficiently
 - 📦 DTO pattern for request & response handling
 - 🛡️ Input validation using annotations (`@Valid`)
 - ⚠️ Global exception handling using `@ControllerAdvice`
@@ -195,6 +196,53 @@ General runtime exceptions
         "name": "Name cannot be empty"
     }
 }
+
+📄 Example Pagination
+Api : GET/http://localhost:8080/admin?page=0&size=5
+{
+    "content": [
+        {
+            "id": 1,
+            "name": "admin1",
+            "age": 30,
+            "email": "admin1@gmail.com",
+            "role": "ADMIN"
+        },
+        {
+            "id": 2,
+            "name": "user1",
+            "age": 18,
+            "email": "user1@gmail.com",
+            "role": "USER"
+        },
+        {
+            "id": 3,
+            "name": "user2",
+            "age": 19,
+            "email": "user2@gmail.com",
+            "role": "USER"
+        },
+        {
+            "id": 4,
+            "name": "user3",
+            "age": 20,
+            "email": "user3@gmail.com",
+            "role": "USER"
+        },
+        {
+            "id": 52,
+            "name": "user4",
+            "age": 25,
+            "email": "user4@gmail.com",
+            "role": "USER"
+        }
+    ],
+    "page": 0,
+    "size": 5,
+    "totalElements": 9,
+    "totalPages": 2,
+    "last": false
+}
 ```
 ## 📈 Current Status
 ✔ CRUD operations implemented
@@ -208,10 +256,8 @@ General runtime exceptions
 ## 🔮 Future Improvements
 
 📄 API documentation (Swagger / OpenAPI)
-🔐 Authentication & Authorization (Spring Security + JWT)
-📊 Pagination & Sorting
+📊 Sorting
 🧪 Unit & Integration Testing
-📜 Logging & Monitoring
 
 
 ## 🎯 Learning Objectives
@@ -231,3 +277,4 @@ Backend Developer (Java | Spring Boot | SQL)
 
 This project is part of my backend development journey.
 The codebase will continue to evolve with new features and improvements following industry best practices.
+

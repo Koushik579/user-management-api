@@ -45,7 +45,7 @@ public class UserService {
         log.info("Featching all users");
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
         Page<User> usersPerPage = userRepository.findAll(pageable);
-        
+
         return new PageResponse<>(
                 usersPerPage.getContent().stream()
                         .map(userMapper::mapToDTO).toList(),
