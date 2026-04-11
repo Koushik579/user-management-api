@@ -3,10 +3,12 @@ package com.koushik.usermanagement.security;
 import com.koushik.usermanagement.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,18 +39,22 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+        String header = request.getHeader("Authorization");
+        String token = null;
+        if(header != null && header.startsWith("Bearer ")){
+            token = header.substring(7);
+        }
+        if (token == null){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Expired or Invalid Token");
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Missing or Expired Token\"}");
             return;
         }
-        String token = authHeader.substring(7);
 
         if(jwtService.isTokenValid(token)){
             String email = jwtService.extractEmail(token);
             if (email == null){
-                log.error("Email is null");
+                log.warn("Extracted email from token is null");
             }
             if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
                 String role = jwtService.extractRole(token);

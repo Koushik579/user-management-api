@@ -1,5 +1,6 @@
 package com.koushik.usermanagement.mapper;
 
+import com.koushik.usermanagement.dto.PageResponse;
 import com.koushik.usermanagement.dto.UserRequestDTO;
 import com.koushik.usermanagement.dto.UserResponseDTO;
 import com.koushik.usermanagement.entity.User;

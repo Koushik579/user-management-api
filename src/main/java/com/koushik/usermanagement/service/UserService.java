@@ -1,9 +1,6 @@
 package com.koushik.usermanagement.service;
 
-import com.koushik.usermanagement.dto.AuthResponseDTO;
-import com.koushik.usermanagement.dto.LoginRequestDTO;
-import com.koushik.usermanagement.dto.UserRequestDTO;
-import com.koushik.usermanagement.dto.UserResponseDTO;
+import com.koushik.usermanagement.dto.*;
 import com.koushik.usermanagement.entity.User;
 import com.koushik.usermanagement.exception.InvalidCredentialsException;
 import com.koushik.usermanagement.exception.UserNotFoundException;
@@ -11,6 +8,10 @@ import com.koushik.usermanagement.mapper.UserMapper;
 import com.koushik.usermanagement.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +37,24 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
-
-    public List<UserResponseDTO> getUsers(){
+    public PageResponse<UserResponseDTO> getUsers(
+             int page
+            , int size
+            , String sortBy
+    ){
         log.info("Featching all users");
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::mapToDTO)
-                .toList();
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+        Page<User> usersPerPage = userRepository.findAll(pageable);
+        
+        return new PageResponse<>(
+                usersPerPage.getContent().stream()
+                        .map(userMapper::mapToDTO).toList(),
+                usersPerPage.getNumber(),
+                usersPerPage.getSize(),
+                usersPerPage.getTotalElements(),
+                usersPerPage.getTotalPages(),
+                usersPerPage.isLast()
+        );
     }
 
     public UserResponseDTO addUser(UserRequestDTO dto){
