@@ -22,6 +22,7 @@ This makes the application closer to real-world production-grade APIs.
   - Controller → Service → Repository → Entity
 - 📜 Logging implemented for tracking application flow and debugging
 - 📄 Pagination support for fetching users efficiently
+- 📈 Sorting which helps to fetch data using required order
 - 📦 DTO pattern for request & response handling
 - 🛡️ Input validation using annotations (`@Valid`)
 - ⚠️ Global exception handling using `@ControllerAdvice`
@@ -104,6 +105,7 @@ src/main/java/com/koushik/usermanagement
 │
 ├── dto/ # Data Transfer Objects
 │ ├── AuthRersponseDTO.java
+| ├── PageResponse.java
 │ ├── UserRequestDTO.java
 │ ├── LoginRequestDTO.java
 │ └── UserResponseDTO.java
@@ -197,8 +199,8 @@ General runtime exceptions
     }
 }
 
-📄 Example Pagination
-Api : GET/http://localhost:8080/admin?page=0&size=5
+📄 Example Pagination & sorting
+Api : GET/http://localhost:8080/admin?page=0&size=5&sortBy="id"&sortDir="DESC"
 {
     "content": [
         {

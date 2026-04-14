@@ -41,9 +41,13 @@ public class UserService {
              int page
             , int size
             , String sortBy
+            , String sortDir
     ){
         log.info("Featching all users");
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+        Sort sort = null;
+        if(sortDir.equals("DESC")) sort = Sort.by(sortBy).ascending();
+        else sort = Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page,size,sort);
         Page<User> usersPerPage = userRepository.findAll(pageable);
 
         return new PageResponse<>(
